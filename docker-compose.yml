@@ -6,6 +6,11 @@ services:
       - DEBUG=False
       - ALLOWED_HOSTS=0.0.0.0,localhost
     container_name: django_web
+    command: >
+      sh -c "python manage.py makemigrations &&
+             python manage.py migrate &&
+             python manage.py collectstatic --noinput &&
+             gunicorn register.wsgi:application --bind 0.0.0.0:8000"
     volumes:
       - .:/code
     expose:
